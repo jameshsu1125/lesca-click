@@ -1,13 +1,18 @@
 import React from 'react';
 import { render } from 'react-dom';
-import MyClass from './../lib/index';
+import TouchEvent from './../lib/index';
 
 import './styles.css';
+
+TouchEvent.init();
+Click.add('.myDiv', (e) => {
+	console.log(e);
+});
 
 function Demo() {
 	return (
 		<>
-			<MyClass />
+			<div className='myDiv'>button</div>
 		</>
 	);
 }
