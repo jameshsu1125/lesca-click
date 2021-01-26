@@ -2,10 +2,13 @@ module.exports = {
 	preventDefault: true,
 	db: {},
 	deviation: 30,
-	init(clickEventAlso = true, install = true) {
+	init(clickEventAlso = true, install = true, ex_down = () => {}, ex_move = () => {}, ex_up = () => {}) {
 		this.px = this.mx = 0;
 		this.py = this.my = 0;
 		this.dx = this.dy = 0;
+		this.ex_down = ex_down;
+		this.ex_move = ex_move;
+		this.ex_up = ex_up;
 		this.is_press = false;
 
 		this.down = (e) => {
@@ -21,6 +24,7 @@ module.exports = {
 					}
 				}
 			}
+			this.down_fn(e);
 			this.is_press = true;
 		};
 
@@ -41,6 +45,7 @@ module.exports = {
 					}
 				}
 			}
+			this.move_fn(e);
 		};
 
 		this.up = (e) => {
@@ -48,6 +53,7 @@ module.exports = {
 				this.get(e);
 			}
 			this.is_press = false;
+			this.ex_up(e);
 		};
 
 		document.addEventListener('touchstart', this.down, {
