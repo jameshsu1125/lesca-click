@@ -24,7 +24,7 @@ module.exports = {
 					}
 				}
 			}
-			this.down_fn(e);
+			this.ex_down(e);
 			this.is_press = true;
 		};
 
@@ -45,7 +45,7 @@ module.exports = {
 					}
 				}
 			}
-			this.move_fn(e);
+			this.ex_move(e);
 		};
 
 		this.up = (e) => {
