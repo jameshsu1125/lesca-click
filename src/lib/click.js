@@ -112,4 +112,13 @@ module.exports = {
 			document.removeEventListener('mouseup', this.up);
 		}
 	},
+	getClientXY(e) {
+		try {
+			const left = e.clientX || e.targetTouches[0].clientX;
+			const top = e.clientY || e.targetTouches[0].clientY;
+			return { left, top };
+		} catch {
+			return false;
+		}
+	},
 };
