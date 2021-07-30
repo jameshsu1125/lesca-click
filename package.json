@@ -1,6 +1,6 @@
 {
 	"name": "lesca-click",
-	"version": "1.0.9",
+	"version": "1.0.10",
 	"description": "replace click / touch start on SPY page",
 	"main": "lib/index.js",
 	"scripts": {
@@ -47,5 +47,8 @@
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:jameshsu1125/lesca-touch-event.git"
+	},
+	"dependencies": {
+		"mobile-detect": "^1.4.5"
 	}
 }

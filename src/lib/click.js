@@ -75,14 +75,30 @@ module.exports = {
 		if (install) window.Click = window.Click || this;
 	},
 	get(e) {
+		const { localName } = e.target;
+		const { type } = e;
+
 		let key = e.target.id + '_id';
 		if (this.db[key]) {
-			this.db[key](e);
+			if (localName !== 'button') {
+				this.db[key](e);
+			} else {
+				const device = this.detect();
+				if (device === 'mobile' && type === 'touchend') this.db[key](e);
+				else if (device !== 'mobile' && type === 'mouseup') this.db[key](e);
+			}
 			return;
 		}
+
 		key = e.target.className + '_class';
 		if (this.db[key]) {
-			this.db[key](e);
+			if (localName !== 'button') {
+				this.db[key](e);
+			} else {
+				const device = this.detect();
+				if (device === 'mobile' && type === 'touchend') this.db[key](e);
+				else if (device !== 'mobile' && type === 'mouseup') this.db[key](e);
+			}
 			return;
 		}
 	},
@@ -120,5 +136,13 @@ module.exports = {
 		} catch {
 			return false;
 		}
+	},
+	detect() {
+		let MobileDetect = require('mobile-detect'),
+			m = new MobileDetect(window.navigator.userAgent);
+
+		if (m.tablet()) return 'mobile';
+		else if (m.mobile()) return 'mobile';
+		else return 'desktop';
 	},
 };

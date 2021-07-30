@@ -12,7 +12,7 @@ Click.add('.myDiv', (e) => {
 function Demo() {
 	return (
 		<>
-			<div className='myDiv'>button</div>
+			<button className='myDiv'>button</button>
 		</>
 	);
 }
