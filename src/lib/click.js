@@ -16,7 +16,7 @@ module.exports = {
 			if (this.preventDefault) {
 				if (e.cancelable) {
 					if (!e.defaultPrevented) {
-						if (n != 'input' && n != 'select') e.preventDefault();
+						if (n != 'input' && n != 'button' && n != 'select') e.preventDefault();
 						try {
 							this.px = this.mx = e.clientX || e.targetTouches[0].clientX;
 							this.py = this.my = e.clientY || e.targetTouches[0].clientY;
