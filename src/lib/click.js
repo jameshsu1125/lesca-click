@@ -11,7 +11,8 @@ module.exports = {
 		this.ex_up = ex_up;
 		this.is_press = false;
 
-		if (this.detect() === 'desktop') this.deviation = 0;
+		this.pageOffset = { top: 0, left: 0 };
+		this.pageOffseta = { top: 0, left: 0 };
 
 		this.down = (e) => {
 			let n = e.target.localName;
@@ -26,6 +27,10 @@ module.exports = {
 					}
 				}
 			}
+
+			// check element position
+			this.pageOffset = this.pageOffseta = this.getOffset(e);
+
 			this.ex_down(e);
 			this.is_press = true;
 		};
@@ -48,12 +53,15 @@ module.exports = {
 					}
 				}
 			}
+			this.pageOffseta = this.getOffset(e);
 			this.ex_move(e);
 		};
 
 		this.up = (e) => {
-			if (Math.abs(this.px - this.mx) <= this.deviation && Math.abs(this.py - this.my) <= this.deviation) {
-				this.get(e);
+			if (this.pageOffset.top === this.pageOffseta.top && this.pageOffset.left === this.pageOffseta.left) {
+				if (Math.abs(this.px - this.mx) <= this.deviation && Math.abs(this.py - this.my) <= this.deviation) {
+					this.get(e);
+				}
 			}
 			this.is_press = false;
 			this.ex_up(e);
@@ -147,5 +155,12 @@ module.exports = {
 		if (m.tablet()) return 'mobile';
 		else if (m.mobile()) return 'mobile';
 		else return 'desktop';
+	},
+	getOffset(e) {
+		const rect = e?.target.getBoundingClientRect();
+		return {
+			top: rect.top + window.scrollY,
+			left: rect.left + window.scrollX,
+		};
 	},
 };
