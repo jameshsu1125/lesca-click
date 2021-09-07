@@ -11,6 +11,8 @@ module.exports = {
 		this.ex_up = ex_up;
 		this.is_press = false;
 
+		if (this.detect() === 'desktop') this.deviation = 0;
+
 		this.down = (e) => {
 			let n = e.target.localName;
 			if (this.preventDefault) {
@@ -39,6 +41,7 @@ module.exports = {
 						try {
 							this.px = e.clientX || e.targetTouches[0].clientX;
 							this.py = e.clientY || e.targetTouches[0].clientY;
+
 							this.dx = this.px - this.mx;
 							this.dy = this.py - this.my;
 						} catch {}
@@ -49,7 +52,7 @@ module.exports = {
 		};
 
 		this.up = (e) => {
-			if (Math.abs(this.px - this.mx) < this.deviation && Math.abs(this.py - this.my) < this.deviation) {
+			if (Math.abs(this.px - this.mx) <= this.deviation && Math.abs(this.py - this.my) <= this.deviation) {
 				this.get(e);
 			}
 			this.is_press = false;

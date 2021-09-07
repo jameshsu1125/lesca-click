@@ -1,6 +1,6 @@
 {
 	"name": "lesca-click",
-	"version": "1.0.12",
+	"version": "2.0.0",
 	"description": "replace click / touch start on SPY page",
 	"main": "lib/index.js",
 	"scripts": {
