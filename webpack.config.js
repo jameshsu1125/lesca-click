@@ -9,12 +9,27 @@ module.exports = {
 	},
 	module: {
 		rules: [
-			{ test: /\.(js|jsx)$/, use: 'babel-loader', exclude: /node_modules/ },
-			{ test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
-			{ test: /\.less$/, use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader'] },
+			{
+				test: /\.(js|jsx)$/,
+				use: 'babel-loader',
+				exclude: /node_modules/,
+			},
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader', 'postcss-loader'],
+			},
+			{
+				test: /\.less$/,
+				use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader'],
+			},
 			{
 				test: /\.(png|jpg|gif|svg)$/,
-				use: [{ loader: 'file-loader', options: { name: 'img/[path][name].[ext]', context: 'src/docs' } }],
+				use: [
+					{
+						loader: 'file-loader',
+						options: { name: 'img/[path][name].[ext]', context: 'src/docs' },
+					},
+				],
 			},
 		],
 	},
@@ -27,8 +42,6 @@ module.exports = {
 		extensions: ['.js', '.jsx'],
 	},
 	devServer: {
-		contentBase: path.join(__dirname, 'docs'),
 		port: 8000,
-		stats: 'minimal',
 	},
 };

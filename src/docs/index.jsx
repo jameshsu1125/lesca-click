@@ -9,6 +9,10 @@ Click.add('.myDiv', (e) => {
 	console.log(e);
 });
 
+setTimeout(() => {
+	Click.preventDefault = false;
+}, 1000);
+
 function Demo() {
 	return (
 		<>
