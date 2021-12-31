@@ -11,7 +11,7 @@ $ npm install lesca-click --save
 ```javascript
 import Click from 'lesca-click';
 
-Click.init(true, true);
+Click.install(true, true);
 
 Click.add('.target', (e) => {
 	console.log('target clicked');
@@ -20,15 +20,15 @@ Click.add('.target', (e) => {
 
 # Methods
 
-| method                        |    options     |            description             | default |
-| :---------------------------- | :------------: | :--------------------------------: | ------: |
-| init(clickEventAlso, install) | clickEventAlso |      click event combine also      |    true |
-|                               |    install     |        set on window.Click         |    true |
-| add(target, execution)        |     target     | selector => ".target" or "#target" |         |
-|                               |   execution    |      call when target clicked      |         |
-| remove(target)                |     target     | selector => ".target" or "#target" |         |
-| clear()                       |                |        clear all functions         |         |
-| destory()                     |                |          remove all event          |         |
+| method                           |    options     |            description             | default |
+| :------------------------------- | :------------: | :--------------------------------: | ------: |
+| install(clickEventAlso, install) | clickEventAlso |      click event combine also      |    true |
+|                                  |    install     |        set on window.Click         |    true |
+| add(target, execution)           |     target     | selector => ".target" or "#target" |         |
+|                                  |   execution    |      call when target clicked      |         |
+| remove(target)                   |     target     | selector => ".target" or "#target" |         |
+| clear()                          |                |        clear all functions         |         |
+| destory()                        |                |          remove all event          |         |
 
 # Properties
 

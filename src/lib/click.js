@@ -2,7 +2,7 @@ module.exports = {
 	preventDefault: true,
 	db: {},
 	deviation: 30,
-	init(clickEventAlso = true, install = true, ex_down = () => {}, ex_move = () => {}, ex_up = () => {}) {
+	install(clickEventAlso = true, install = true, ex_down = () => {}, ex_move = () => {}, ex_up = () => {}) {
 		this.px = this.mx = 0;
 		this.py = this.my = 0;
 		this.dx = this.dy = 0;
