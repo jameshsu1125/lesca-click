@@ -28,11 +28,5 @@ Click.add('.target', (e) => {
 |                                  |   execution    |      call when target clicked      |         |
 | remove(target)                   |     target     | selector => ".target" or "#target" |         |
 | clear()                          |                |        clear all functions         |         |
-| destory()                        |                |          remove all event          |         |
-
-# Properties
-
-| Properties     |  type  |         description         | default |
-| :------------- | :----: | :-------------------------: | ------: |
-| preventDefault |  bool  | prevent Default by yourself |    true |
-| deviation      | number |    click hand deviation     |      30 |
+| setPreventDefault(value)         |     value      |       is set preventDefault        |         |
+| addPreventExcept(DOM-query)      |   DOM-query    |         .target or #target         |         |
