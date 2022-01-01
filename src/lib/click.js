@@ -1,166 +1,165 @@
-module.exports = {
-	preventDefault: true,
-	db: {},
-	deviation: 30,
-	install(clickEventAlso = true, install = true, ex_down = () => {}, ex_move = () => {}, ex_up = () => {}) {
-		this.px = this.mx = 0;
-		this.py = this.my = 0;
-		this.dx = this.dy = 0;
-		this.ex_down = ex_down;
-		this.ex_move = ex_move;
-		this.ex_up = ex_up;
-		this.is_press = false;
+import { GET_DEVICE, CHECK_PARENT_HAS_CLASS } from './constants';
 
-		this.pageOffset = { top: 0, left: 0 };
-		this.pageOffseta = { top: 0, left: 0 };
+/**
+ * event dataset
+ */
+export let dataset = {};
 
-		this.down = (e) => {
-			let n = e.target.localName;
-			if (this.preventDefault) {
-				if (e.cancelable) {
-					if (!e.defaultPrevented) {
-						if (n != 'input' && n != 'button' && n != 'select') e.preventDefault();
-						try {
-							this.px = this.mx = e.clientX || e.targetTouches[0].clientX;
-							this.py = this.my = e.clientY || e.targetTouches[0].clientY;
-						} catch {}
-					}
-				}
-			}
+const mousePropertyDown = { x: 0, y: 0 };
+const mousePropertyMove = { x: mousePropertyDown.x, y: mousePropertyDown.y };
+const extraEvent = { down: () => {}, move: () => {}, up: () => {} };
+const state = { device: false, isPress: false, deviation: 30, preventDefault: true };
+const eventProperty = { passive: false, capture: false };
+const moveOffsetProperty = { x: 0, y: 0 };
+let exceptParentClassIDDataset = [];
 
-			// check element position
-			this.pageOffset = this.pageOffseta = this.getOffset(e);
-
-			this.ex_down(e);
-			this.is_press = true;
-		};
-
-		this.move = (e) => {
-			if (!this.is_press) return;
-
-			let n = e.target.localName;
-			if (this.preventDefault) {
-				if (e.cancelable) {
-					if (!e.defaultPrevented) {
-						if (n != 'input' && n != 'button' && n != 'select') e.preventDefault();
-						try {
-							this.px = e.clientX || e.targetTouches[0].clientX;
-							this.py = e.clientY || e.targetTouches[0].clientY;
-
-							this.dx = this.px - this.mx;
-							this.dy = this.py - this.my;
-						} catch {}
-					}
-				}
-			}
-			this.pageOffseta = this.getOffset(e);
-			this.ex_move(e);
-		};
-
-		this.up = (e) => {
-			if (this.pageOffset.top === this.pageOffseta.top && this.pageOffset.left === this.pageOffseta.left) {
-				if (Math.abs(this.px - this.mx) <= this.deviation && Math.abs(this.py - this.my) <= this.deviation) {
-					this.get(e);
-				}
-			}
-			this.is_press = false;
-			this.ex_up(e);
-		};
-
-		document.addEventListener('touchstart', this.down, {
-			passive: false,
-			capture: false,
-		});
-		document.addEventListener('touchmove', this.move, {
-			passive: false,
-			capture: false,
-		});
-		document.addEventListener('touchend', this.up);
-
-		if (clickEventAlso) {
-			document.addEventListener('mousedown', this.down);
-			document.addEventListener('mousemove', this.move);
-			document.addEventListener('mouseup', this.up);
-		}
-
-		if (install) window.Click = window.Click || this;
-	},
-	get(e) {
-		const { localName } = e.target;
-		const { type } = e;
-
-		let key = e.target.id + '_id';
-		if (this.db[key]) {
-			if (localName !== 'button') {
-				this.db[key](e);
-			} else {
-				const device = this.detect();
-				if (device === 'mobile' && type === 'touchend') this.db[key](e);
-				else if (device !== 'mobile' && type === 'mouseup') this.db[key](e);
-			}
-			return;
-		}
-
-		key = e.target.className + '_class';
-		if (this.db[key]) {
-			if (localName !== 'button') {
-				this.db[key](e);
-			} else {
-				const device = this.detect();
-				if (device === 'mobile' && type === 'touchend') this.db[key](e);
-				else if (device !== 'mobile' && type === 'mouseup') this.db[key](e);
-			}
-			return;
-		}
-	},
-	add(query, fn) {
-		if (!fn) console.log('require callback function');
-		let type = query.slice(0, 1) == '.' ? '_class' : '_id';
-		let name = query.slice(1);
-		let key = name + type;
-		this.db[key] = fn;
-	},
-	remove(query) {
-		let type = query.slice(0, 1) == '.' ? '_class' : '_id';
-		let name = query.slice(1);
-		let key = name + type;
-		delete this.db[key];
-	},
-	clear() {
-		this.db = {};
-	},
-	destory() {
-		document.removeEventListener('touchstart', this.down);
-		document.removeEventListener('touchmove', this.move);
-		document.removeEventListener('touchend', this.up);
-		if (clickEventAlso) {
-			document.removeEventListener('mousedown', this.down);
-			document.removeEventListener('mousemove', this.move);
-			document.removeEventListener('mouseup', this.up);
-		}
-	},
-	getClientXY(e) {
-		try {
-			const left = e.clientX || e.targetTouches[0].clientX;
-			const top = e.clientY || e.targetTouches[0].clientY;
-			return { left, top };
-		} catch {
-			return false;
-		}
-	},
-	detect() {
-		let MobileDetect = require('mobile-detect'),
-			m = new MobileDetect(window.navigator.userAgent);
-
-		if (m.tablet()) return 'mobile';
-		else if (m.mobile()) return 'mobile';
-		else return 'desktop';
-	},
-	getOffset(e) {
-		const rect = e?.target.getBoundingClientRect();
-		return {
-			top: rect.top + window.scrollY,
-			left: rect.left + window.scrollX,
-		};
-	},
+const checkDataset = (e) => {
+	const { target } = e;
+	[`${target.id}_id`, `${target.className}_class`].forEach((name) => {
+		dataset[name]?.(e);
+	});
 };
+
+const areWePreventDefault = (e) => {
+	const { preventDefault } = state;
+	const hasClassID = CHECK_PARENT_HAS_CLASS(e, exceptParentClassIDDataset);
+	if (preventDefault && !hasClassID && e.cancelable && !e.defaultPrevented) {
+		const n = e.target.localName;
+		if (n != 'input' && n != 'button' && n != 'select') e.preventDefault();
+	}
+};
+
+const down = (e) => {
+	state.isPress = true;
+	const x = e.clientX || e.targetTouches[0].clientX || false;
+	const y = e.clientY || e.targetTouches[0].clientY || false;
+	if (!x || !y) return;
+
+	areWePreventDefault(e);
+	mousePropertyDown.x = x;
+	mousePropertyDown.y = y;
+	mousePropertyMove.x = x;
+	mousePropertyMove.y = y;
+
+	extraEvent.down(e);
+};
+
+const move = (e) => {
+	if (!state.isPress) return;
+	const x = e.clientX || e.targetTouches[0].clientX || false;
+	const y = e.clientY || e.targetTouches[0].clientY || false;
+	if (!x || !y) return;
+
+	areWePreventDefault(e);
+
+	const { x: dx, y: dy } = mousePropertyDown;
+	moveOffsetProperty.x = x - dx;
+	moveOffsetProperty.y = y - dy;
+
+	mousePropertyMove.x = x;
+	mousePropertyMove.y = y;
+
+	extraEvent.move({ ...e, moveOffsetProperty });
+};
+
+const up = (e) => {
+	state.isPress = false;
+
+	const { x: dx, y: dy } = mousePropertyDown;
+	const { x: mx, y: my } = mousePropertyMove;
+	const { deviation } = state;
+
+	const m = Math.sqrt((mx - dx) ** 2 + (my - dy) ** 2);
+	if (m < deviation) checkDataset(e);
+
+	extraEvent.up(e);
+};
+
+const addListener = (device) => {
+	if (device === 'mobile') {
+		document.addEventListener('touchstart', down, eventProperty);
+		document.addEventListener('touchmove', move, eventProperty);
+		document.addEventListener('touchend', up);
+	} else {
+		document.addEventListener('mousedown', down);
+		document.addEventListener('mousemove', move);
+		document.addEventListener('mouseup', up);
+	}
+};
+
+const removeListener = (device) => {
+	if (device === 'mobile') {
+		document.removeEventListener('mousedown', down);
+		document.removeEventListener('mousemove', move);
+		document.removeEventListener('mouseup', up);
+	} else {
+		document.removeEventListener('touchstart', down);
+		document.removeEventListener('touchmove', move);
+		document.removeEventListener('touchend', up);
+	}
+};
+
+const eventTransform = () => {
+	const { device } = state;
+	const d = GET_DEVICE();
+	if (!device) {
+		state.device = d;
+		addListener(d);
+	} else if (device !== d) {
+		state.device = d;
+		removeListener(d);
+		addListener(d);
+	}
+};
+
+/**
+ *
+ * @param {queryString} query make sure it's uni-name.(ex: .target || #target)
+ */
+export const addPreventExcept = (query) => {
+	const type = typeof query;
+	if (type === 'string') exceptParentClassIDDataset.push(query);
+	else if (Array.isArray(query)) {
+		exceptParentClassIDDataset = [...query];
+	}
+};
+
+/**
+ * set preventDefault will call or not.
+ * @param {boolean} value
+ */
+export const setPreventDefault = (value) => {
+	state.preventDefault = value;
+};
+
+/**
+ *
+ * @param {queryString} query make sure it's uni-name.(ex: .target || #target)
+ * @param {function} callback call when click
+ * @returns
+ */
+export const add = (query, callback) => {
+	if (!callback) return;
+
+	const type = query.slice(0, 1) === '.' ? '_class' : '_id';
+	const name = query.slice(1);
+	const key = name + type;
+	dataset[key] = callback;
+};
+
+/**
+ * add events
+ */
+export const install = () => {
+	eventTransform();
+	window.addEventListener('resize', eventTransform);
+};
+
+/**
+ * clear all dataset
+ */
+export const clear = () => {
+	dataset = {};
+};
+
+export default { install, dataset, addPreventExcept, setPreventDefault, add, clear };

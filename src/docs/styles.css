@@ -5,9 +5,19 @@ body {
 }
 
 .myDiv {
-	position: absolute;
 	width: 100px;
 	height: 100px;
 	background-color: red;
 	color: #eee;
+}
+
+.g {
+	width: 100px;
+	height: 60px;
+	overflow: scroll;
+}
+.btn {
+	width: 100px;
+	height: 80px;
+	background-color: rebeccapurple;
 }
