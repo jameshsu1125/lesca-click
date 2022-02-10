@@ -11,7 +11,7 @@ $ npm install lesca-click --save
 ```javascript
 import Click from 'lesca-click';
 
-Click.install(true, true);
+Click.install();
 
 Click.add('.target', (e) => {
 	console.log('target clicked');
