@@ -6,6 +6,10 @@
 $ npm install lesca-click --save
 ```
 
+# Demo
+
+[Live Demo](https://jameshsu1125.github.io/lesca-click/)
+
 # Usage
 
 ```javascript
