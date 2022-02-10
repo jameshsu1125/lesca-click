@@ -169,4 +169,6 @@ export const clear = () => {
 	dataset = {};
 };
 
-export default { install, dataset, addPreventExcept, setPreventDefault, add, clear, remove };
+const Click = { install, dataset, addPreventExcept, setPreventDefault, add, clear, remove };
+
+export default Click;
