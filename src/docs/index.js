@@ -1,4 +1,4 @@
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Click from '../lib';
 import { Code, Navation } from './components';
 import Demo from './demo';
@@ -13,7 +13,7 @@ const code = `import Click from 'lesca-click';
 Click.install();
 `;
 
-Click.install();
+Click.install('#app');
 
 const Page = () => {
 	return (
@@ -50,4 +50,4 @@ const Page = () => {
 	);
 };
 
-render(<Page />, document.getElementById('app'));
+createRoot(document.getElementById('app')).render(<Page />);

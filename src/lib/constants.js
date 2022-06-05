@@ -43,3 +43,17 @@ export const CHECK_PARENT_HAS_CLASS = (e, classDataset) => {
 
 	return result.length > 0;
 };
+
+export const FIND_ROOT = (e) => {
+	const { target } = e;
+
+	let node = target;
+	let result;
+
+	while (node.tagName !== 'BODY') {
+		result = node;
+		node = node.parentNode;
+	}
+
+	return result;
+};

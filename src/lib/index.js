@@ -1,4 +1,4 @@
-import { GET_DEVICE, CHECK_PARENT_HAS_CLASS } from './constants';
+import { GET_DEVICE, CHECK_PARENT_HAS_CLASS, FIND_ROOT } from './constants';
 
 /**
  * event dataset
@@ -12,6 +12,7 @@ const state = { device: false, isPress: false, deviation: 30, preventDefault: tr
 const eventProperty = { passive: false, capture: false };
 const moveOffsetProperty = { x: 0, y: 0 };
 let exceptParentClassIDDataset = [];
+let rootElement = false;
 
 const checkDataset = (e) => {
 	const { target } = e;
@@ -22,10 +23,22 @@ const checkDataset = (e) => {
 
 const areWePreventDefault = (e) => {
 	const { preventDefault } = state;
-	const hasClassID = CHECK_PARENT_HAS_CLASS(e, exceptParentClassIDDataset);
-	if (preventDefault && !hasClassID && e.cancelable && !e.defaultPrevented) {
-		const n = e.target.localName;
-		if (n != 'input' && n != 'button' && n != 'select') e.preventDefault();
+	const root = FIND_ROOT(e);
+	let isRoot = false;
+	if (rootElement) {
+		if (rootElement.indexOf('.') >= 0) {
+			isRoot = rootElement === `.${root.className}`;
+		} else if (rootElement.indexOf('#') >= 0) {
+			isRoot = rootElement === `.${root.className}`;
+		}
+	}
+
+	if (isRoot) {
+		const hasClassID = CHECK_PARENT_HAS_CLASS(e, exceptParentClassIDDataset);
+		if (preventDefault && !hasClassID && e.cancelable && !e.defaultPrevented) {
+			const n = e.target.localName;
+			if (n != 'input' && n != 'button' && n != 'select') e.preventDefault();
+		}
 	}
 };
 
@@ -157,7 +170,8 @@ export const remove = (query) => {
 /**
  * add events
  */
-export const install = () => {
+export const install = (app = '#app') => {
+	rootElement = app;
 	eventTransform();
 	window.addEventListener('resize', eventTransform);
 };
