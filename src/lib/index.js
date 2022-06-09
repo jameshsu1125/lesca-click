@@ -25,11 +25,12 @@ const areWePreventDefault = (e) => {
 	const { preventDefault } = state;
 	const root = FIND_ROOT(e);
 	let isRoot = false;
+
 	if (rootElement) {
 		if (rootElement.indexOf('.') >= 0) {
 			isRoot = rootElement === `.${root.className}`;
 		} else if (rootElement.indexOf('#') >= 0) {
-			isRoot = rootElement === `.${root.className}`;
+			isRoot = rootElement === `#${root.id}`;
 		}
 	}
 
