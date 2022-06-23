@@ -1,7 +1,7 @@
 {
   "name": "lesca-click",
-  "version": "4.2.0",
-  "description": "replace click / touch start on SPY page",
+  "version": "4.2.1",
+  "description": "use for prevent browser default behavior. usually used in web without scroll app.",
   "main": "lib/index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development",
