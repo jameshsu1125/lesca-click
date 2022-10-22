@@ -27,6 +27,7 @@ const state = { device: '', isPress: false, deviation: 30, preventDefault: true 
 const eventProperty = { passive: false, capture: false };
 let exceptParentClassIDDataset: string[] = [];
 let rootElement = '';
+export let enabled = true;
 
 const checkDataset = (e: TouchEvent | MouseEvent) => {
   const { target } = e;
@@ -103,7 +104,7 @@ const move = (e: TouchEvent | MouseEvent) => {
   const y = e instanceof TouchEvent ? e.targetTouches[0].clientY : e.clientY || false;
   if (!x || !y) return;
 
-  areWePreventDefault(e);
+  if (enabled) areWePreventDefault(e);
 
   const { x: dx, y: dy } = mousePropertyDown;
   moveOffsetProperty.x = x - dx;
@@ -188,6 +189,15 @@ export const setPreventDefault = (value: boolean) => {
   state.preventDefault = value;
 };
 
-const Click = { install, dataset, addPreventExcept, setPreventDefault, add, clear, remove };
+const Click = {
+  install,
+  dataset,
+  addPreventExcept,
+  setPreventDefault,
+  add,
+  clear,
+  remove,
+  enabled,
+};
 
 export default Click;

@@ -1,4 +1,5 @@
 export declare let dataset: any;
+export declare let enabled: boolean;
 export declare const add: (query: string, callback: Function) => void;
 export declare const remove: (query: string) => void;
 export declare const install: (app?: string) => void;
@@ -13,5 +14,6 @@ declare const Click: {
     add: (query: string, callback: Function) => void;
     clear: () => void;
     remove: (query: string) => void;
+    enabled: boolean;
 };
 export default Click;
