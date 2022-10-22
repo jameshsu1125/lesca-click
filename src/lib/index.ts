@@ -23,11 +23,10 @@ const extraEvent = {
   move: (e: TriggerTouch | TriggerMouse) => {},
   up: (e: TouchEvent | MouseEvent) => {},
 };
-const state = { device: '', isPress: false, deviation: 30, preventDefault: true };
+const state = { device: '', isPress: false, deviation: 30, preventDefault: true, enabled: true };
 const eventProperty = { passive: false, capture: false };
 let exceptParentClassIDDataset: string[] = [];
 let rootElement = '';
-export let enabled = true;
 
 const checkDataset = (e: TouchEvent | MouseEvent) => {
   const { target } = e;
@@ -54,7 +53,8 @@ const eventTransform = () => {
 };
 
 const areWePreventDefault = (e: TouchEvent | MouseEvent) => {
-  const { preventDefault } = state;
+  const { preventDefault, enabled } = state;
+  if (!enabled) return;
   const root = FIND_ROOT(e);
   let isRoot = false;
 
@@ -104,7 +104,7 @@ const move = (e: TouchEvent | MouseEvent) => {
   const y = e instanceof TouchEvent ? e.targetTouches[0].clientY : e.clientY || false;
   if (!x || !y) return;
 
-  if (enabled) areWePreventDefault(e);
+  areWePreventDefault(e);
 
   const { x: dx, y: dy } = mousePropertyDown;
   moveOffsetProperty.x = x - dx;
@@ -189,6 +189,10 @@ export const setPreventDefault = (value: boolean) => {
   state.preventDefault = value;
 };
 
+export const setEnabled = (value: boolean) => {
+  state.enabled = value;
+};
+
 const Click = {
   install,
   dataset,
@@ -197,7 +201,7 @@ const Click = {
   add,
   clear,
   remove,
-  enabled,
+  setEnabled,
 };
 
 export default Click;
