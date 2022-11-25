@@ -84,8 +84,8 @@ const areWePreventDefault = (e: TouchEvent | MouseEvent) => {
 const down = (e: TouchEvent | MouseEvent) => {
   state.isPress = true;
 
-  const x = e instanceof TouchEvent ? e.targetTouches[0].clientX : e.clientX || false;
-  const y = e instanceof TouchEvent ? e.targetTouches[0].clientY : e.clientY || false;
+  const x = e instanceof MouseEvent ? e.clientX : e.targetTouches[0].clientX || false;
+  const y = e instanceof MouseEvent ? e.clientY : e.targetTouches[0].clientY || false;
 
   if (!x || !y) return;
 
@@ -100,8 +100,8 @@ const down = (e: TouchEvent | MouseEvent) => {
 
 const move = (e: TouchEvent | MouseEvent) => {
   if (!state.isPress) return;
-  const x = e instanceof TouchEvent ? e.targetTouches[0].clientX : e.clientX || false;
-  const y = e instanceof TouchEvent ? e.targetTouches[0].clientY : e.clientY || false;
+  const x = e instanceof MouseEvent ? e.clientX : e.targetTouches[0].clientX || false;
+  const y = e instanceof MouseEvent ? e.clientY : e.targetTouches[0].clientY || false;
   if (!x || !y) return;
 
   areWePreventDefault(e);
