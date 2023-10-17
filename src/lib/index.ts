@@ -1,4 +1,4 @@
-import { GET_DEVICE, CHECK_PARENT_HAS_CLASS, FIND_ROOT } from './constants';
+import { GET_DEVICE, CHECK_PARENT_HAS_CLASS, FIND_ROOT } from './misc';
 
 interface TriggerTouch extends TouchEvent {
   moveOffsetProperty: {
