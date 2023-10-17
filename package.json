@@ -1,6 +1,6 @@
 {
   "name": "lesca-click",
-  "version": "4.3.4",
+  "version": "4.3.5",
   "description": "use for prevent browser default behavior. usually used in web without scroll app.",
   "main": "lib/index.js",
   "scripts": {
@@ -30,7 +30,6 @@
     "@babel/preset-env": "^7.23.2",
     "@babel/preset-react": "^7.22.15",
     "@babel/preset-typescript": "^7.23.2",
-    "@babel/runtime": "^7.23.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.13",
@@ -61,6 +60,7 @@
   },
   "author": "jamehsu1125 <jameshsu1125@gmail.com>",
   "dependencies": {
+    "@babel/runtime": "^7.23.2",
     "mobile-detect": "^1.4.5"
   }
 }
