@@ -22,6 +22,30 @@ const Demo = () => {
       <pre>
         <code>{count}</code>
       </pre>
+      <div className='divider'>
+        12123123
+        <br />
+        12123123
+        <br />
+        12123123
+        <br />
+        12123123
+        <br />
+        12123123
+        <br />
+        12123123
+        <br />
+        12123123
+        <br />
+        12123123
+        <br />
+        12123123
+        <br />
+        12123123
+        <br />
+        12123123
+        <br />
+      </div>
       <ButtonGroup variant='contained'>
         <Button id='increase'>increase count</Button>
         <Button id='remove'>remove Click event</Button>
