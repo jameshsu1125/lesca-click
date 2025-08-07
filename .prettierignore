@@ -3,9 +3,14 @@ logs
 *.log
 npm-debug.log*
 
+# Ignore artifacts:
+dist/
+.next/
+lib/
+
 # Dependency directories
 node_modules/
 
 # Ignore files
 package-lock.json
-
+public/.htaccess
