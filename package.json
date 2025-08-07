@@ -1,11 +1,12 @@
 {
-  "name": "template-npm-vite",
+  "name": "lesca-click",
   "private": false,
-  "description": "xxxxx",
-  "version": "0.0.0",
+  "description": "use for prevent browser default behavior. for web app without scroll.",
+  "version": "5.0.0",
   "type": "module",
   "keywords": [
-    "lesca"
+    "lesca",
+    "click"
   ],
   "files": [
     "lib"

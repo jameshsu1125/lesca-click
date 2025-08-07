@@ -1,27 +1,17 @@
 import { GET_DEVICE, CHECK_PARENT_HAS_CLASS, FIND_ROOT } from './misc';
 
-interface TriggerTouch extends TouchEvent {
-  moveOffsetProperty: {
-    x: number;
-    y: number;
-  };
-}
-
-interface TriggerMouse extends MouseEvent {
-  moveOffsetProperty: {
-    x: number;
-    y: number;
-  };
-}
-
 export let dataset: any = {};
 const mousePropertyDown = { x: 0, y: 0 };
 const mousePropertyMove = { x: mousePropertyDown.x, y: mousePropertyDown.y };
 const moveOffsetProperty = { x: 0, y: 0 };
-const extraEvent = {
-  down: (e: TouchEvent | MouseEvent) => {},
-  move: (e: TriggerTouch | TriggerMouse) => {},
-  up: (e: TouchEvent | MouseEvent) => {},
+const extraEvent: {
+  down: (event: TouchEvent | MouseEvent) => void;
+  move: (event: TouchEvent | MouseEvent, moveOffsetProperty?: { x: number; y: number }) => void;
+  up: (event: TouchEvent | MouseEvent) => void;
+} = {
+  down: (_: TouchEvent | MouseEvent) => {},
+  move: (_: TouchEvent | MouseEvent, _moveOffsetProperty?: { x: number; y: number }) => {},
+  up: (_: TouchEvent | MouseEvent) => {},
 };
 const state = { device: '', isPress: false, deviation: 30, preventDefault: true, enabled: true };
 const eventProperty = { passive: false, capture: false };
@@ -113,7 +103,13 @@ const move = (e: TouchEvent | MouseEvent) => {
   mousePropertyMove.x = x;
   mousePropertyMove.y = y;
 
-  extraEvent.move({ ...e, moveOffsetProperty });
+  // Pass the event as-is, and handle moveOffsetProperty separately if needed
+  (
+    extraEvent.move as (
+      event: TouchEvent | MouseEvent,
+      moveOffsetProperty?: { x: number; y: number },
+    ) => void
+  )(e, { ...moveOffsetProperty });
 };
 
 const up = (e: TouchEvent | MouseEvent) => {
