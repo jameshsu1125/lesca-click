@@ -1,10 +1,17 @@
-import YourClass from '.';
+import Click from '.';
+
+Click.install('#app');
 
 const createApp = () => {
   return new Promise<HTMLElement>((resolve) => {
     const app = document.createElement('div');
+    app.id = 'button';
     app.innerHTML = 'Hello, World!';
-    console.log(YourClass);
+
+    Click.add('#button', () => {
+      console.log('Button clicked!');
+    });
+
     resolve(app);
   });
 };

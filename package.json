@@ -24,7 +24,9 @@
     "preview": "vite preview",
     "rm": "rm -rf node_modules/ dist/ package-lock.json"
   },
-  "dependencies": {},
+  "dependencies": {
+    "mobile-detect": "^1.4.5"
+  },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@types/node": "^24.2.0",
