@@ -62,8 +62,8 @@ const areWePreventDefault = (e: TouchEvent | MouseEvent) => {
     const hasClassID = CHECK_PARENT_HAS_CLASS(e, exceptParentClassIDDataset);
     if (preventDefault && !hasClassID && e.cancelable && !e.defaultPrevented) {
       if (e.target instanceof Element) {
-        const { localName } = e.target;
-        if (localName != 'input' && localName != 'button' && localName != 'select') {
+        const interactive = e.target.closest('input, button, select, textarea, a');
+        if (!interactive) {
           e.preventDefault();
         }
       }
