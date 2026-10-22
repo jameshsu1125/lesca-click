@@ -42,7 +42,13 @@ export default defineConfig({
     ],
     plugins: [
         cssInjectedByJsPlugin(),
-        dtsPlugin({ insertTypesEntry: true, outDir: "../lib" }),
+        dtsPlugin({
+            tsconfigPath: resolve(__dirname, "tsconfig.json"),
+            outDirs: resolve(__dirname, "lib"),
+            entryRoot: resolve(__dirname, "src"),
+            include: ["**/*.ts"],
+            insertTypesEntry: true,
+        }),
     ],
     server: {
         open: true,

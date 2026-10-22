@@ -1,11 +1,11 @@
-interface TriggerTouch extends TouchEvent {
+export interface TriggerTouch extends TouchEvent {
   moveOffsetProperty: {
     x: number;
     y: number;
   };
 }
 
-interface TriggerMouse extends MouseEvent {
+export interface TriggerMouse extends MouseEvent {
   moveOffsetProperty: {
     x: number;
     y: number;

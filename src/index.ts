@@ -1,6 +1,6 @@
 import { GET_DEVICE, CHECK_PARENT_HAS_CLASS, FIND_ROOT } from './misc';
 
-export let dataset: any = {};
+export let dataset: Record<string, (event: TouchEvent | MouseEvent) => void> = {};
 const mousePropertyDown = { x: 0, y: 0 };
 const mousePropertyMove = { x: mousePropertyDown.x, y: mousePropertyDown.y };
 const moveOffsetProperty = { x: 0, y: 0 };
@@ -9,9 +9,9 @@ const extraEvent: {
   move: (event: TouchEvent | MouseEvent, moveOffsetProperty?: { x: number; y: number }) => void;
   up: (event: TouchEvent | MouseEvent) => void;
 } = {
-  down: (_: TouchEvent | MouseEvent) => {},
-  move: (_: TouchEvent | MouseEvent, _moveOffsetProperty?: { x: number; y: number }) => {},
-  up: (_: TouchEvent | MouseEvent) => {},
+  down: () => {},
+  move: () => {},
+  up: () => {},
 };
 const state = { device: '', isPress: false, deviation: 30, preventDefault: true, enabled: true };
 const eventProperty = { passive: false, capture: false };
@@ -149,7 +149,7 @@ const removeListener = (device: string) => {
   }
 };
 
-export const add = (query: string, callback: Function) => {
+export const add = (query: string, callback: (event: TouchEvent | MouseEvent) => void) => {
   if (!callback) return;
 
   const type = query.slice(0, 1) === '.' ? '_class' : '_id';
@@ -159,9 +159,9 @@ export const add = (query: string, callback: Function) => {
 };
 
 export const remove = (query: string) => {
-  var type = query.slice(0, 1) == '.' ? '_class' : '_id';
-  var name = query.slice(1);
-  var key = name + type;
+  const type = query.slice(0, 1) == '.' ? '_class' : '_id';
+  const name = query.slice(1);
+  const key = name + type;
   delete dataset[key];
 };
 
