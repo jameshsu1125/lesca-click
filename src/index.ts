@@ -17,6 +17,10 @@ const state = { device: '', isPress: false, deviation: 30, preventDefault: true,
 const eventProperty = { passive: false, capture: false };
 let exceptParentClassIDDataset: string[] = [];
 let rootElement = '';
+let isGestureBlocked = false;
+
+const isButtonTarget = (e: TouchEvent | MouseEvent) =>
+  e.target instanceof Element && e.target.closest('button') !== null;
 
 const checkDataset = (e: TouchEvent | MouseEvent) => {
   const { target } = e;
@@ -63,7 +67,9 @@ const areWePreventDefault = (e: TouchEvent | MouseEvent) => {
     if (preventDefault && !hasClassID && e.cancelable && !e.defaultPrevented) {
       if (e.target instanceof Element) {
         const interactive = e.target.closest('input, button, select, textarea, a');
-        if (!interactive) {
+        const isButtonMove =
+          isButtonTarget(e) && (e.type === 'mousemove' || e.type === 'touchmove');
+        if (!interactive || isButtonMove) {
           e.preventDefault();
         }
       }
@@ -73,6 +79,7 @@ const areWePreventDefault = (e: TouchEvent | MouseEvent) => {
 
 const down = (e: TouchEvent | MouseEvent) => {
   state.isPress = true;
+  isGestureBlocked = isButtonTarget(e);
 
   const x = e instanceof MouseEvent ? e.clientX : e.targetTouches[0].clientX || false;
   const y = e instanceof MouseEvent ? e.clientY : e.targetTouches[0].clientY || false;
@@ -85,7 +92,7 @@ const down = (e: TouchEvent | MouseEvent) => {
   mousePropertyMove.x = x;
   mousePropertyMove.y = y;
 
-  extraEvent.down(e);
+  if (!isGestureBlocked) extraEvent.down(e);
 };
 
 const move = (e: TouchEvent | MouseEvent) => {
@@ -104,12 +111,14 @@ const move = (e: TouchEvent | MouseEvent) => {
   mousePropertyMove.y = y;
 
   // Pass the event as-is, and handle moveOffsetProperty separately if needed
-  (
-    extraEvent.move as (
-      event: TouchEvent | MouseEvent,
-      moveOffsetProperty?: { x: number; y: number },
-    ) => void
-  )(e, { ...moveOffsetProperty });
+  if (!isGestureBlocked) {
+    (
+      extraEvent.move as (
+        event: TouchEvent | MouseEvent,
+        moveOffsetProperty?: { x: number; y: number },
+      ) => void
+    )(e, { ...moveOffsetProperty });
+  }
 };
 
 const up = (e: TouchEvent | MouseEvent) => {
@@ -122,7 +131,8 @@ const up = (e: TouchEvent | MouseEvent) => {
   const m = Math.sqrt((mx - dx) ** 2 + (my - dy) ** 2);
   if (m < deviation) checkDataset(e);
 
-  extraEvent.up(e);
+  if (!isGestureBlocked) extraEvent.up(e);
+  isGestureBlocked = false;
 };
 
 const addListener = (device: string) => {

@@ -2,7 +2,7 @@
   "name": "lesca-click",
   "private": false,
   "description": "use for prevent browser default behavior. for web app without scroll.",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "type": "module",
   "keywords": [
     "lesca",
@@ -32,16 +32,16 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/node": "^26.6.5",
+    "@types/node": "^26.6.6",
     "eslint": "^10.13.0",
     "globals": "^17.13.0",
     "path": "^0.12.7",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.72.0",
+    "typescript-eslint": "^8.72.1",
     "vite": "^8.3.5",
-    "vite-plugin-css-injected-by-js": "^5.0.2",
+    "vite-plugin-css-injected-by-js": "^5.0.3",
     "vite-plugin-dts": "^5.1.2"
   }
 }

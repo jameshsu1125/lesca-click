@@ -54,3 +54,4 @@ Click.add('.target', (e) => {
 ### Features
 
 - maintain if necessary
+- button elements do not trigger movement gestures or browser movement defaults, while click callbacks still work
