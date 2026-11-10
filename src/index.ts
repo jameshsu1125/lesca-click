@@ -191,7 +191,12 @@ export const addPreventExcept = (query: string | string[]) => {
   } else exceptParentClassIDDataset.push(query);
 };
 
-export const setPreventDefault = (value: boolean) => {
+export const removePreventExcept = (query: string | string[]) => {
+  const targets = Array.isArray(query) ? query : [query];
+  exceptParentClassIDDataset = exceptParentClassIDDataset.filter((item) => !targets.includes(item));
+};
+
+export const setPreventDefault =(value: boolean) => {
   state.preventDefault = value;
 };
 
@@ -203,6 +208,7 @@ const Click = {
   install,
   dataset,
   addPreventExcept,
+  removePreventExcept,
   setPreventDefault,
   add,
   clear,
